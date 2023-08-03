@@ -1,0 +1,29 @@
+service: moviesapi
+
+provider:
+  name: aws
+  runtime: dotnet6
+  region: eu-central-1
+
+package:
+  individually: true
+
+functions:
+  hello:
+    handler: AwsDotnetCsharp::AwsDotnetCsharp.Handler::HelloWorld
+    package:
+      artifact: bin/release/net6.0/hello.zip
+
+    events:
+      - http:
+          path: hello
+          method: get
+  getquerystring:
+    handler: AwsDotnetCsharp::AwsDotnetCsharp.Handler::GetQuerystring
+
+    package:
+      artifact: bin/release/net6.0/hello.zip
+    events:
+      - http:
+          path: getquerystring
+          method: get

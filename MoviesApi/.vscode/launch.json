@@ -1,0 +1,23 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Launch (console)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "/Users/{userid}/.dotnet/tools/dotnet-lambda-test-tool-6.0",
+      // More information:
+      // https://github.com/aws/aws-lambda-dotnet/tree/master/Tools/LambdaTestTool#configure-for-visual-studio-code,
+      // https://github.com/aws/aws-lambda-dotnet/tree/master/Tools/LambdaTestTool#configure-for-visual-studio-for-mac
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}

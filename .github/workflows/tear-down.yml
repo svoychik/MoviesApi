@@ -1,4 +1,4 @@
-name: .NET Core
+name: Tear down
 
 on:
   workflow_dispatch:

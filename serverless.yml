@@ -9,21 +9,19 @@ package:
   individually: true
 
 functions:
-  hello:
-    handler: AwsDotnetCsharp::AwsDotnetCsharp.Handler::HelloWorld
+  getallmovies:
+    handler: MoviesApi::MoviesApi.GetAllFilmsHandler::Execute
     package:
       artifact: bin/release/net6.0/hello.zip
-
     events:
       - http:
-          path: hello
+          path: movies
           method: get
-  getquerystring:
-    handler: AwsDotnetCsharp::AwsDotnetCsharp.Handler::GetQuerystring
-
+  getmoviebyid:
+    handler: MoviesApi::MoviesApi.GetFilmByIdHandler::Execute2
     package:
       artifact: bin/release/net6.0/hello.zip
     events:
       - http:
-          path: getquerystring
+          path: movies/{id}
           method: get

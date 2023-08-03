@@ -1,9 +1,4 @@
-using System;
-using Amazon.Lambda.APIGatewayEvents;
-using Newtonsoft.Json;
-
 namespace MoviesApi;
-
 public class Movie
 {
     public int Id { get; set; }

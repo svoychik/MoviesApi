@@ -1,0 +1,15 @@
+using System;
+using Amazon.Lambda.APIGatewayEvents;
+using Newtonsoft.Json;
+
+namespace MoviesApi;
+
+public class Movie
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public DateTime ReleaseDate { get; set; }
+    public string Genre { get; set; }
+    public double Rating { get; set; }
+}

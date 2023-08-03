@@ -1,12 +1,16 @@
-# serverlessDotNetStarter ![.NET 6](https://github.com/pharindoko/serverlessDotNetStarter/workflows/.NET%20Core/badge.svg?branch=master)
+# Project to demonstrate how to build API with .Net Core & API Gateway & serverless framework
 
-Starter template for serverless framework with following scope:
+The project is configured for deployment in eu-central-1 AWS
+To deploy project to your own AWS account generate your own API Keys and set them up with `aws configure`
 
-- deploy C# / NET 6 solution in **AWS cloud** using:
-  - Lambda
-  - Api Gateway
-- debug and test solution locally in **Visual Studio Code**
-- works operating system independent
+## Deployment
+
+Prerequisites: AWS keys
+
+```
+npm i
+npm run build-deploy
+```
 
 ## Prerequisites to install
 
@@ -14,9 +18,9 @@ Starter template for serverless framework with following scope:
 - [Serverless Framework CLI](https://serverless.com)
 - [.NET Core 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 - [AWS-Lambda-DotNet](https://github.com/aws/aws-lambda-dotnet)
+- [AWS-Lambda-DotNet](https://github.com/aws/aws-lambda-dotnet)
 - [Visual Studio Code](https://code.visualstudio.com/)
-- [C# Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
-
+- [VS Code Extension Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 Verify that everything is installed (copy & paste)
 
 ```bash
@@ -28,138 +32,7 @@ sls -v
 dotnet --version
 ```
 
-## Installation (copy & paste)
-
-```bash
-# clone solution
-# serverless create --template-url https://github.com/pharindoko/serverlessDotNetStarter --path {SERVICE_NAME}
-serverless create --template-url https://github.com/pharindoko/serverlessDotNetStarter --path serverlessDotNetStarter
-cd serverlessDotNetStarter
-# restore / install dotnet references described in csproj file
-dotnet restore AwsDotnetCsharp.csproj
-
-# install Lambda NET Mock Test Tool and Amazon Lambda Tools
-# more details: https://github.com/aws/aws-lambda-dotnet/tree/master/Tools/LambdaTestTool
-
-dotnet tool install -g Amazon.Lambda.Tools
-dotnet tool install --global Amazon.Lambda.TestTool-6.0
-dotnet tool list -g
-
-# required dotnet packages:
-#
-# Package Id                      Version      Commands
-------------------------------------------------------------------------
-#amazon.lambda.testtool-6.0      0.12.4       dotnet-lambda-test-tool-6.0
-#amazon.lambda.tools             5.4.5        dotnet-lambda
-```
-
-**For VS Code Debugging:**
-
-> ```bash
-> code --install-extension ms-dotnettools.csharp --force
-> ```
-
-## Debug & Test locally
-
-I followed this guideline: (Please read in case of issues)
-
-[How to Debug .NET Core Lambda Functions Locally with the Serverless Framework](https://itnext.io/how-to-debug-net-core-lambda-functions-locally-with-the-serverless-framework-dd1670bc22e2)
-
-#### 1. Open Visual Studio Code
-
-```bash
-# open Visual Studio Code
-code .
-```
-
-#### 2. Setup Amazon Lambda Testtool
-
-Edit the "program" property in .vscode/launch.json file and update placeholder for {user} (placeholders marked in bold)
-
-##### For Windows
-
-<pre><code>
-"program": /Users/<b>{user}</b>/.dotnet/tools/dotnet-lambda-test-tool-6.0
-</pre></code>
-
-##### For MacOs / Linux
-
-<pre><code>
-"program": /Users/<b>{user}</b>/.dotnet/tools/dotnet-lambda-test-tool-6.0
-</pre></code>
-
-More information:
-
-- <https://github.com/aws/aws-lambda-dotnet/tree/master/Tools/LambdaTestTool#configure-for-visual-studio-code>,
-- <https://github.com/aws/aws-lambda-dotnet/tree/master/Tools/LambdaTestTool#configure-for-visual-studio-for-mac>
-
-In case of issues - try this:
-
-<pre><code>
-  "program": /Users/<b>{user}</b>/.dotnet/tools/.store/amazon.lambda.testtool-6.0/<b>{nuget-version}</b>/amazon.lambda.testtool-6.0/<b>{nuget-version}</b>/tools/net6.0/any/Amazon.Lambda.TestTool.WebTester6.0.dll",
-</pre></code>
-
-> **how to get the right nuget version ?**
-
-  <pre><code>
-   dotnet tool list -g
-
-   Result:
-    Package Id                      Version                   Commands
-    ------------------------------------------------------------------------
-    amazon.lambda.testtool-6.0      <b>e.g. version 0.12.4</b>       dotnet-lambda-test-tool-6.0
-  </pre></code>
-
-#### 3. Press **F5** to start the debugging and local testing of lambda function
-
-- Hint: Lambda Mock Test Tool should be started locally on port 5050
-- Click on Button "Execute Function"
-
-![Image description](resources/images/lambda_test_tool.png)
-
-> you should get hello world as a result.
-
-#### Test Another Example: getquerystring
-
-1. Select function to **getquerystring** (upper right dropdownlist)
-2. Insert this json value in the function input textbox for a first test:
-
-    ```json
-    {
-      "httpMethod": "GET",
-      "queryStringParameters": {
-        "foo": "dfgdfg",
-        "woot": "food"
-      }
-    }
-    ```
-
-> **Mind:** For a successful response querystringParameter **foo** must be inserted
-
-## Build Package
-
-Mac OS or Linux
-
-```bash
-./build.sh
-```
-
-Windows
-
-```bash
-build.cmd
-```
-
-## Deploy via Serverless Framework
-
-```bash
-serverless deploy
-```
-
-A cloudformation stack in AWS will be created in background containing all needed resources
-
-#### After successful deployment you can see following output
-
+### After successful deployment you can the similar output
 <pre>
 Service Information
 service: myService
@@ -178,40 +51,17 @@ layers:
 
 </pre>
 
-## Test endpoint after deployment
+### Test endpoint after deployment
 
-2 simple options:
+3 options:
 
 - [Use postman as UI Tool](https://www.getpostman.com/)
 - Use curl
+- Use VS Code Rest Client extensions and run scripts from `/requests/*.http` folder
 
 Use the **endpointUrl** from up above.
 
-```bash
-curl https://{api}.execute-api.us-east-1.amazonaws.com/dev/hello
-curl https://{api}.execute-api.us-east-1.amazonaws.com/dev/getquerystring?foo=test
-```
-
-**Mind:** For a successful response of function getquerystring the querystringParameter **foo** must be inserted
-
-## FAQ
-
-###### Can I use the solution with Visual Studio IDE (2017 or 2019)
-
-1. Yes. [Here`s the guideline.](https://github.com/aws/aws-lambda-dotnet/tree/master/Tools/LambdaTestTool#configure-for-visual-studio)
-
-###### How to add an api key
-
-1. Setup API Key in serverless.yml file
-   <https://serverless.com/framework/docs/providers/aws/events/apigateway/#setting-api-keys-for-your-rest-api>
-
-###### How to add additional lambda functions
-
-1. Create a new C# Function in Handler.cs or use another file
-2. Add a new function to serverless.yml and reference the C# Function as handler
-   <https://serverless.com/framework/docs/providers/aws/guide/functions/>
-
-###### Destroy the stack in the cloud
+## Destroy the stack in the cloud
 
 ```bash
 sls remove

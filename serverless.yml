@@ -5,23 +5,56 @@ provider:
   runtime: dotnet6
   region: eu-central-1
 
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:Query
+          Resource: "arn:aws:dynamodb:eu-central-1:403117364727:table/Movies"
+
 package:
   individually: true
 
 functions:
   getallmovies:
-    handler: MoviesApi::MoviesApi.GetAllFilmsHandler::Execute
+    handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetAll
     package:
       artifact: bin/release/net6.0/hello.zip
     events:
       - http:
           path: movies
-          method: get
+          method: GET
   getmoviebyid:
-    handler: MoviesApi::MoviesApi.GetFilmByIdHandler::Execute2
+    handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetById
     package:
       artifact: bin/release/net6.0/hello.zip
     events:
       - http:
           path: movies/{id}
-          method: get
+          method: GET
+  postmoviebyid:
+    handler: MoviesApi::MoviesApi.CreateMovieHandler::ExecuteAsync
+    package:
+      artifact: bin/release/net6.0/hello.zip
+    events:
+      - http:
+          path: movies
+          method: POST
+
+resources:
+  Resources:
+    MoviesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Movies
+        AttributeDefinitions:
+          - AttributeName: Id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5

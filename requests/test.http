@@ -1,5 +1,31 @@
-@baseUrl = https://linawn16h8.execute-api.eu-central-1.amazonaws.com/dev
+@baseUrl = https://4yb3mot5ce.execute-api.eu-central-1.amazonaws.com/dev
 
-GET {{baseUrl}}/movies
+GET {{baseUrl}}/movies HTTP/1.1
+
 ###
-GET {{baseUrl}}/movies/1
+GET {{baseUrl}}/movies/1 HTTP/1.1
+
+### Valid POST request
+POST {{baseUrl}}/movies HTTP/1.1
+content-Type: application/json
+
+{
+  "Id": "1",
+  "Title": "The Shawshank Redemption",
+  "Description": "Two imprisoned men bond over several years, finding solace and eventual redemption through acts of common decency.",
+  "ReleaseDate": "1994-09-23",
+  "Genre": "Drama",
+  "Rating": 9.45
+}
+
+### Invalid POST request
+POST {{baseUrl}}/movies
+content-Type: application/json
+
+{
+  "Id": "2",
+  "Description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+  "ReleaseDate": "1972-03-24",
+  "Genre": "Crime, Drama",
+  "Rating": 9.2
+}

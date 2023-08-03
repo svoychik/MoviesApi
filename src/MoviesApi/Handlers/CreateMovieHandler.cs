@@ -18,18 +18,18 @@ public class MovieValidator : AbstractValidator<Movie>
         RuleFor(movie => movie.Rating).InclusiveBetween(0, 10);
     }
 }
-public class PostMovieHandler
+public class CreateMovieHandler
 {
     private readonly IValidator<Movie> _movieValidator;
     private readonly AmazonDynamoDBClient _dynamoDbClient;
 
-    public PostMovieHandler()
+    public CreateMovieHandler()
     {
         _movieValidator = new MovieValidator();
         _dynamoDbClient = new AmazonDynamoDBClient();
     }
 
-    public async Task<APIGatewayProxyResponse> CreateMovie(APIGatewayProxyRequest request, ILambdaContext context)
+    public async Task<APIGatewayProxyResponse> ExecuteAsync(APIGatewayProxyRequest request, ILambdaContext context)
     {
         try
         {
@@ -62,12 +62,13 @@ public class PostMovieHandler
             var response = new APIGatewayProxyResponse
             {
                 StatusCode = (int)HttpStatusCode.OK,
-                Body = JsonConvert.SerializeObject(request),
+                Body = JsonConvert.SerializeObject(movie),
                 Headers = new Dictionary<string, string>()
                 {
                     ["location"] = $"/movies/{movie.Id}"
                 }
             };
+            return response;
         }
         catch (Exception ex)
         {

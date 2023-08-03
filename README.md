@@ -10,6 +10,10 @@ Prerequisites: AWS keys
 ```
 npm i
 npm run build-deploy
+
+# seed dynamodb db Movies table with some dummy data
+chmod +wrx ./seed.sh
+./seed.sh
 ```
 
 ## Prerequisites to install

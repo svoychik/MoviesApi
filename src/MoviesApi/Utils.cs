@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using Amazon.Lambda.APIGatewayEvents;
 using Newtonsoft.Json;
 
@@ -20,5 +21,17 @@ public static class Utils
             }
         };
         return response;
+    }
+
+    public static (bool Successful, Dictionary<string, string> Claims) ValidateJwtToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(token);
+        var tokenS = jsonToken as JwtSecurityToken;
+        if (tokenS is null)
+            return (false, new());
+        var claims = tokenS!.Claims.ToDictionary(c => c.Type, c => c.Value);
+        return (true, claims);
+
     }
 }

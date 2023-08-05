@@ -5,6 +5,7 @@ provider:
   runtime: dotnet6
   region: eu-central-1
 
+  apiName: movies-api # Use a custom name for the API Gateway API - needed to easily identify the resource
   iam:
     role:
       statements:
@@ -12,13 +13,14 @@ provider:
           Action:
             - dynamodb:PutItem
             - dynamodb:Query
+            - dynamodb:Scan
           Resource: "arn:aws:dynamodb:eu-central-1:403117364727:table/Movies"
 
 package:
   individually: true
 
 functions:
-  getallmovies:
+  GetAllMovies:
     handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetAll
     package:
       artifact: bin/release/net6.0/hello.zip
@@ -26,7 +28,7 @@ functions:
       - http:
           path: movies
           method: GET
-  getmoviebyid:
+  GetMovieById:
     handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetById
     package:
       artifact: bin/release/net6.0/hello.zip
@@ -34,7 +36,7 @@ functions:
       - http:
           path: movies/{id}
           method: GET
-  postmoviebyid:
+  PostMovieById:
     handler: MoviesApi::MoviesApi.CreateMovieHandler::ExecuteAsync
     package:
       artifact: bin/release/net6.0/hello.zip
@@ -42,7 +44,16 @@ functions:
       - http:
           path: movies
           method: POST
-
+          authorizer:
+            name: Authorizer
+            resultTtlInSeconds: 5
+            identitySource: method.request.header.Authorization
+            identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
+            type: token
+  Authorizer:
+    handler: MoviesApi::MoviesApi.AuthorizeHandler::Execute
+    package:
+      artifact: bin/release/net6.0/hello.zip
 resources:
   Resources:
     MoviesTable:

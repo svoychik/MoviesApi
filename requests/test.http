@@ -1,16 +1,30 @@
-@baseUrl = https://4yb3mot5ce.execute-api.eu-central-1.amazonaws.com/dev
+@baseUrl = https://a4mgo6vfhl.execute-api.eu-central-1.amazonaws.com/dev
 
 GET {{baseUrl}}/movies HTTP/1.1
 
 ###
 GET {{baseUrl}}/movies/1 HTTP/1.1
 
-### Valid POST request
+### Not Authorized POST request
 POST {{baseUrl}}/movies HTTP/1.1
 content-Type: application/json
 
 {
-  "Id": "1",
+  "Id": "100",
+  "Title": "The Shawshank Redemption",
+  "Description": "Two imprisoned men bond over several years, finding solace and eventual redemption through acts of common decency.",
+  "ReleaseDate": "1994-09-23",
+  "Genre": "Drama",
+  "Rating": 9.45
+}
+
+### Authorized POST request
+POST {{baseUrl}}/movies HTTP/1.1
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsIm5ldyI6ImFkYXMifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaXNzIjoic2V2byIsImlhdCI6MTUxNjIzOTAyMn0.7l5tVlWWwFfTwB8DwxWYkjf4sGL8Yqv8EGDcOEQrXfs
+
+{
+  "Id": "100",
   "Title": "The Shawshank Redemption",
   "Description": "Two imprisoned men bond over several years, finding solace and eventual redemption through acts of common decency.",
   "ReleaseDate": "1994-09-23",

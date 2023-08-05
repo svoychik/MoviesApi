@@ -5,6 +5,8 @@ VisualStudioVersion = 25.0.1703.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi", "MoviesApi.csproj", "{A6CA9C65-217A-4CF5-9CB4-47E8033CEA96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.UnitTests", "..\MoviesApi.UnitTests\MoviesApi.UnitTests.csproj", "{5F77D613-90DF-4FA1-8B1F-3FB7CCD4CED3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A6CA9C65-217A-4CF5-9CB4-47E8033CEA96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6CA9C65-217A-4CF5-9CB4-47E8033CEA96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6CA9C65-217A-4CF5-9CB4-47E8033CEA96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F77D613-90DF-4FA1-8B1F-3FB7CCD4CED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F77D613-90DF-4FA1-8B1F-3FB7CCD4CED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F77D613-90DF-4FA1-8B1F-3FB7CCD4CED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F77D613-90DF-4FA1-8B1F-3FB7CCD4CED3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

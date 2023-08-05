@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
 using FluentValidation;
 using Newtonsoft.Json;
 

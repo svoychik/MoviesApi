@@ -32,7 +32,6 @@ public class QueryFilmsApiHandler
     {
         if (!request.PathParameters.ContainsKey("id") || !int.TryParse(request.PathParameters["id"], out var movieId))
             return new APIGatewayProxyResponse() { StatusCode = (int)HttpStatusCode.BadRequest, Body = "not valid id" + request.PathParameters["id"]};
-        
         var response = await _dynamoDbClient.QueryAsync(new QueryRequest(Consts.MoviesTableName)
         {
             TableName = Consts.MoviesTableName,

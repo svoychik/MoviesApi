@@ -5,6 +5,9 @@ GET {{baseUrl}}/movies HTTP/1.1
 ###
 GET {{baseUrl}}/movies/1 HTTP/1.1
 
+###
+OPTIONS  {{baseUrl}}/movies/1 HTTP/1.1
+
 ### Not Authorized POST request
 POST {{baseUrl}}/movies HTTP/1.1
 content-Type: application/json

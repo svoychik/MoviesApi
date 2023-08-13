@@ -13,6 +13,9 @@ public class AuthorizeHandler
 
     public APIGatewayCustomAuthorizerResponse Execute(APIGatewayCustomAuthorizerRequest input, ILambdaContext context)
     {
+        context.Logger.LogInformation("MethodArn is: " + input.MethodArn);
+        // const $"arn:aws:execute-api:{regionId}:{accountId}:{apiId}/{stage}/{httpVerb}/[{resource}/[{child-resources}]]"
+
         // extracts token from the string in format 'bearer xxxxx'
         string ExtractBearerToken(string authorizationHeader) =>
             authorizationHeader.Split(' ').LastOrDefault();
@@ -24,35 +27,14 @@ public class AuthorizeHandler
             var validationResult = Utils.ValidateJwtToken(token);
             if (!validationResult.Successful)
                 return GenerateDenyPolicy("Invalid token!");
+
             var claims = validationResult.Claims;
             // Check if the token issuer matches your expected issuer
             if (!claims.TryGetValue("iss", out var issuer) || issuer != Issuer)
                 return GenerateDenyPolicy("Invalid token issuer");
 
             var principalId = claims["sub"];
-            var policy = new APIGatewayCustomAuthorizerResponse
-            {
-                PrincipalID = principalId,
-                // Properties added here will be cached and available on requests to endpoints of API Gateway  
-                Context = new APIGatewayCustomAuthorizerContextOutput()
-                {
-                    ["access_level"] = "movies-api",
-                    ["authorized_at"] = DateTime.UtcNow.ToString("G")
-                },
-                PolicyDocument = new APIGatewayCustomAuthorizerPolicy
-                {
-                    Version = "2012-10-17",
-                    Statement = new List<APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement>
-                    {
-                        new()
-                        {
-                            Action = new HashSet<string> { "execute-api:Invoke" },
-                            Effect = "Allow",
-                            Resource = new HashSet<string> { input.MethodArn }
-                        }
-                    }
-                }
-            };
+            var policy = GenerateAllowPolicy(input, principalId);
 
             return policy;
         }
@@ -61,6 +43,36 @@ public class AuthorizeHandler
             context.Logger.LogError(ex.Message);
             return GenerateDenyPolicy($"Unauthorized: {ex.Message}");
         }
+    }
+
+    private static APIGatewayCustomAuthorizerResponse GenerateAllowPolicy(APIGatewayCustomAuthorizerRequest input,
+        string principalId)
+    {
+        
+        var policy = new APIGatewayCustomAuthorizerResponse
+        {
+            PrincipalID = principalId,
+            // Properties added here will be cached and available on requests to endpoints of API Gateway  
+            Context = new APIGatewayCustomAuthorizerContextOutput()
+            {
+                ["access_level"] = "movies-api",
+                ["authorized_at"] = DateTime.UtcNow.ToString("G")
+            },
+            PolicyDocument = new APIGatewayCustomAuthorizerPolicy
+            {
+                Version = "2012-10-17",
+                Statement = new List<APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement>
+                {
+                    new()
+                    {
+                        Action = new HashSet<string> { "execute-api:Invoke" },
+                        Effect = "Allow",
+                        Resource = new HashSet<string> { input.MethodArn } //Better to allow requests to all API of the AG
+                    }
+                }
+            }
+        };
+        return policy;
     }
 
     private APIGatewayCustomAuthorizerResponse GenerateDenyPolicy(string message)

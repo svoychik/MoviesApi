@@ -1,13 +1,7 @@
-
-using System.Threading.Tasks;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Lambda.Core;
-using Amazon.Lambda.APIGatewayEvents;
-
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
+
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
-namespace MoviesApi;
+namespace MoviesApi.SimpleExample;
 public class QueryFilmsApiHandler
 {
     private readonly AmazonDynamoDBClient _dynamoDbClient;
@@ -23,7 +17,7 @@ public class QueryFilmsApiHandler
             TableName = "Movies"
         };
         var scanResponse = await _dynamoDbClient.ScanAsync(scanRequest);
-        var movies = scanResponse.Items.Select(MapToMovie);
+        var movies = scanResponse.Items.Select(Utils.MapToMovie);
         var response = Utils.CreateResponse(movies);
         return response;
     }
@@ -42,22 +36,9 @@ public class QueryFilmsApiHandler
             }
         });
         return response.Items.Any() 
-            ? Utils.CreateResponse(MapToMovie(response.Items.Single())) 
+            ? Utils.CreateResponse(Utils.MapToMovie(response.Items.Single())) 
             : new APIGatewayProxyResponse() { StatusCode = (int)HttpStatusCode.NotFound };
     }
 
-    private static Movie MapToMovie(Dictionary<string, AttributeValue> item)
-    {
-        if (item == null || !item.Any())
-            return null;
-        return new Movie
-        {
-            Id = int.Parse(item["Id"].S),
-            Title = item["Title"].S,
-            Description = item["Description"].S,
-            ReleaseDate = DateTime.Parse(item["ReleaseDate"].S),
-            Genre = item["Genre"].S,
-            Rating = double.Parse(item["Rating"].N)
-        };
-    }
+    
 }                 

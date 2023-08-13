@@ -1,13 +1,7 @@
-using System.Threading.Tasks;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Lambda.APIGatewayEvents;
-using Amazon.Lambda.Core;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DocumentModel;
 using FluentValidation;
 using Newtonsoft.Json;
 
-namespace MoviesApi;
+namespace MoviesApi.SimpleExample;
 public class MovieValidator : AbstractValidator<Movie>
 {
     public MovieValidator()

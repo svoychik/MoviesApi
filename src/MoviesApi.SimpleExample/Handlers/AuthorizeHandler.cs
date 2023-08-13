@@ -1,11 +1,4 @@
-using Amazon.Lambda.APIGatewayEvents;
-using Amazon.Lambda.Core;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-
-namespace MoviesApi;
+namespace MoviesApi.SimpleExample;
 
 public class AuthorizeHandler
 {

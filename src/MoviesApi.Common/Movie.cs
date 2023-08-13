@@ -1,4 +1,5 @@
-namespace MoviesApi;
+namespace MoviesApi.Common;
+
 public class Movie
 {
     public int Id { get; set; }

@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi", "MoviesApi.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.UnitTests", "..\MoviesApi.UnitTests\MoviesApi.UnitTests.csproj", "{5F77D613-90DF-4FA1-8B1F-3FB7CCD4CED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.HandlersExample", "..\MoviesApi.HandlersExample\src\MoviesApi.HandlersExample\MoviesApi.HandlersExample.csproj", "{9E7FBF9A-79A5-4E40-ABA7-93716AFBAF54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.HandlersExample", "..\MoviesApi.HandlersExample\MoviesApi.HandlersExample.csproj", "{9E7FBF9A-79A5-4E40-ABA7-93716AFBAF54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.Common", "..\MoviesApi.Common\MoviesApi.Common.csproj", "{E2B5E2BA-19CC-4E3E-BAFF-9D72F24285D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9E7FBF9A-79A5-4E40-ABA7-93716AFBAF54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E7FBF9A-79A5-4E40-ABA7-93716AFBAF54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E7FBF9A-79A5-4E40-ABA7-93716AFBAF54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B5E2BA-19CC-4E3E-BAFF-9D72F24285D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B5E2BA-19CC-4E3E-BAFF-9D72F24285D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B5E2BA-19CC-4E3E-BAFF-9D72F24285D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B5E2BA-19CC-4E3E-BAFF-9D72F24285D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

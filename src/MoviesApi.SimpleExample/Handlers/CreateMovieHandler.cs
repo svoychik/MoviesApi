@@ -1,7 +1,7 @@
 using FluentValidation;
 using Newtonsoft.Json;
 
-namespace MoviesApi.SimpleExample;
+namespace MoviesApi;
 public class MovieValidator : AbstractValidator<Movie>
 {
     public MovieValidator()

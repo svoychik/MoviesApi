@@ -3,7 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AWSProjectType>Lambda</AWSProjectType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <RootNamespace>MoviesApi.SimpleExample</RootNamespace>
+    <RootNamespace>MoviesApi</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />

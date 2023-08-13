@@ -1,4 +1,4 @@
-namespace MoviesApi.SimpleExample;
+namespace MoviesApi;
 
 public static class MoviesApiService
 {

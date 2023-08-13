@@ -4,6 +4,6 @@
     "serverless": "^3.32.2"
   },
   "scripts": {
-    "build-deploy": "./build.sh && serverless deploy"
+    "build-deploy": "./build.sh MoviesApi.SimpleExample && serverless deploy"
   }
 }

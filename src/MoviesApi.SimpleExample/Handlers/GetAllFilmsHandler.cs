@@ -1,7 +1,7 @@
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
-namespace MoviesApi.SimpleExample;
+namespace MoviesApi;
 public class QueryFilmsApiHandler
 {
     private readonly AmazonDynamoDBClient _dynamoDbClient;

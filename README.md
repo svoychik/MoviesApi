@@ -71,7 +71,7 @@ Use the **endpointUrl** from up above.
 sls remove
 ```
 
-###### I deployed the solution but I get back a http 500 error
+###### I deployed the solution but I get back an http 500 error
 
 1. Check Cloudwatch Logs in AWS - the issue should be describe there.
 2. For a successful response of function getquerystring the querystringParameter **foo** must be inserted

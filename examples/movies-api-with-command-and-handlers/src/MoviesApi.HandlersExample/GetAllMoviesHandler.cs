@@ -10,7 +10,7 @@ public class GetAllMoviesHandler: BaseHttpHandler<Event, GetMoviesResponse>
         new ServiceCollection()
             //TODO: tell how to initialize Options<T>
             .AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>()
-            .AddSingleton<ICommand<Event, GetMoviesResponse>>()
+            .AddSingleton<ICommand<Event, GetMoviesResponse>, GetAllMoviesCommand>()
             .BuildServiceProvider();
 
     public override Event TransformRequest(APIGatewayProxyRequest request, ILambdaContext context)

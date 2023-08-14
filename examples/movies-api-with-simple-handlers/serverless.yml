@@ -28,6 +28,7 @@ functions:
       - http:
           path: movies
           method: GET
+
   GetMovieById:
     handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetById
     package:
@@ -36,6 +37,7 @@ functions:
       - http:
           path: movies/{id}
           method: GET
+
   PostMovieById:
     handler: MoviesApi::MoviesApi.CreateMovieHandler::ExecuteAsync
     package:
@@ -50,10 +52,12 @@ functions:
             identitySource: method.request.header.Authorization
             identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
             type: token
+
   Authorizer:
     handler: MoviesApi::MoviesApi.AuthorizeHandler::Execute
     package:
       artifact: bin/release/net6.0/hello.zip
+      
 resources:
   Resources:
     MoviesTable:

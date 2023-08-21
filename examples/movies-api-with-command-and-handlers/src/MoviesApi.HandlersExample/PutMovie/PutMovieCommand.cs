@@ -1,4 +1,6 @@
-namespace MoviesApi.HandlersExample.PutMovie;
+using MoviesApi.HandlersExample;
+
+namespace MoviesApi.HandlersExampleß;
 
 public class PutMovieCommand: ICommand<PutMovieInput, Movie>
 {

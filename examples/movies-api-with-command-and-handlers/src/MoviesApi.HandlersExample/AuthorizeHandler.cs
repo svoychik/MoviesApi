@@ -1,4 +1,4 @@
-namespace MoviesApi;
+namespace MoviesApi.HandlersExample;
 
 public class AuthorizeHandler
 {

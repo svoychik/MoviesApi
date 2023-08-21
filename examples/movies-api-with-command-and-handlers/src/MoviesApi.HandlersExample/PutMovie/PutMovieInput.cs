@@ -1,6 +1,10 @@
-namespace MoviesApi.HandlersExample.PutMovie;
+namespace MoviesApi.HandlersExample;
 
 public class PutMovieInput: Event
 {
-    public Movie Movie { get; set; }
+    public PutMovieInput(Movie movie)
+    {
+        Movie = movie;
+    }
+    public Movie Movie { get; init; }
 }

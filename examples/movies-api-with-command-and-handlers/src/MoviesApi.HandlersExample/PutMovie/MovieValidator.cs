@@ -1,7 +1,6 @@
 using FluentValidation;
 
-namespace MoviesApi.HandlersExample.PutMovie;
-
+namespace MoviesApi.HandlersExample;
 public class MovieValidator : AbstractValidator<Movie>
 {
     public MovieValidator()

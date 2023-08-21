@@ -14,6 +14,7 @@ provider:
             - dynamodb:PutItem
             - dynamodb:Query
             - dynamodb:Scan
+            - dynamodb:GetItem
           Resource: "arn:aws:dynamodb:eu-central-1:403117364727:table/Movies"
 
 package:
@@ -29,34 +30,34 @@ functions:
           path: movies
           method: GET
 
-  # GetMovieById:
-  #   handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetById
-  #   package:
-  #     artifact: bin/release/net6.0/hello.zip
-  #   events:
-  #     - http:
-  #         path: movies/{id}
-  #         method: GET
+  GetMovieById:
+    handler: MoviesApi::MoviesApi.HandlersExample.GetMovieByIdHandler::ExecuteAsync
+    package:
+       artifact: bin/release/net6.0/hello.zip
+    events:
+       - http:
+           path: movies/{id}
+           method: GET
 
-  # PostMovieById:
-  #   handler: MoviesApi::MoviesApi.HandlersExample.CreateMovieHandler::ExecuteAsync
-  #   package:
-  #     artifact: bin/release/net6.0/hello.zip
-  #   events:
-  #     - http:
-  #         path: movies
-  #         method: POST
-  #         authorizer:
-  #           name: Authorizer
-  #           resultTtlInSeconds: 5
-  #           identitySource: method.request.header.Authorization
-  #           identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
-  #           type: token
+  PostMovieById:
+    handler: MoviesApi::MoviesApi.HandlersExample.PutMovieHandler::ExecuteAsync
+    package:
+      artifact: bin/release/net6.0/hello.zip
+    events:
+       - http:
+           path: movies
+           method: POST
+           authorizer:
+             name: Authorizer
+             resultTtlInSeconds: 5
+             identitySource: method.request.header.Authorization
+             identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
+             type: token
 
-  # Authorizer:
-  #   handler: MoviesApi::MoviesApi.AuthorizeHandler::Execute
-  #   package:
-  #     artifact: bin/release/net6.0/hello.zip
+  Authorizer:
+     handler: MoviesApi::MoviesApi.HandlersExample.AuthorizeHandler::Execute
+     package:
+       artifact: bin/release/net6.0/hello.zip
       
 resources:
   Resources:

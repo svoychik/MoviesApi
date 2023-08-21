@@ -1,5 +1,5 @@
 
-public record class Event
+public class Event
 {
     public string ConversationId { get; init; } = string.Empty;
 }
@@ -11,7 +11,7 @@ public interface ICommand<in TInput, TOutput> where TInput: Event
 
 public abstract class BaseHttpHandler<TInput, TOutput> where TInput: Event
 {
-    private readonly ICommand<TInput,TOutput> _command;
+    protected readonly ICommand<TInput,TOutput> _command;
 
     protected BaseHttpHandler(Func<IServiceProvider> serviceProviderFunc)
     {

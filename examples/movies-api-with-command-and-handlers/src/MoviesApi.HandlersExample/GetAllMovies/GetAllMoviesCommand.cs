@@ -19,6 +19,6 @@ public class GetAllMoviesCommand: ICommand<Event, GetMoviesResponse>
         };
         var scanResponse = await _dynamoDbClient.ScanAsync(scanRequest);
         var movies = scanResponse.Items.Select(Utils.MapToMovie).ToList();
-        return new GetMoviesResponse(){ Movies = movies };
+        return new GetMoviesResponse { Movies = movies };
     }
 }

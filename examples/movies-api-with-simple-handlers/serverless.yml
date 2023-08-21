@@ -21,7 +21,7 @@ package:
 
 functions:
   GetAllMovies:
-    handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetAll
+    handler: MoviesApi::MoviesApi.QueryMoviesHandler::GetAll
     package:
       artifact: bin/release/net6.0/hello.zip
     events:
@@ -30,7 +30,7 @@ functions:
           method: GET
 
   GetMovieById:
-    handler: MoviesApi::MoviesApi.QueryFilmsApiHandler::GetById
+    handler: MoviesApi::MoviesApi.QueryMoviesHandler::GetById
     package:
       artifact: bin/release/net6.0/hello.zip
     events:

@@ -1,9 +1,9 @@
-@baseUrl = https://to96i3wwa4.execute-api.eu-central-1.amazonaws.com/dev
+@baseUrl = https://maphpn87xe.execute-api.eu-central-1.amazonaws.com/dev
 
 GET {{baseUrl}}/movies HTTP/1.1
 
 ###
-GET {{baseUrl}}/movies/100 HTTP/1.1
+GET {{baseUrl}}/movies/1001 HTTP/1.1
 
 ###
 OPTIONS  {{baseUrl}}/movies/1 HTTP/1.1

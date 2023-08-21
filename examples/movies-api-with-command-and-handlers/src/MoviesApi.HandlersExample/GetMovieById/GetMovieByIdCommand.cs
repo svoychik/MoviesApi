@@ -1,5 +1,5 @@
 namespace MoviesApi.HandlersExample;
-public class GetMovieByIdCommand: ICommand<Event, GetMoviesResponse>
+public class GetMovieByIdCommand: ICommand<GetMovieByIdInput, Movie>
 {
     private readonly IAmazonDynamoDB _dynamoDbClient;
     public GetMovieByIdCommand(IAmazonDynamoDB dynamoDbClient)
@@ -7,14 +7,18 @@ public class GetMovieByIdCommand: ICommand<Event, GetMoviesResponse>
         _dynamoDbClient = dynamoDbClient;
     }
 
-    public async Task<GetMoviesResponse> ExecuteAsync(Event input)
+    public async Task<Movie> ExecuteAsync(GetMovieByIdInput input)
     {
-        var scanRequest = new ScanRequest
+        var response = await _dynamoDbClient.GetItemAsync(new GetItemRequest
         {
-            TableName = "Movies"
-        };
-        var scanResponse = await _dynamoDbClient.ScanAsync(scanRequest);
-        var movies = scanResponse.Items.Select(Utils.MapToMovie).ToList();
-        return new GetMoviesResponse(){ Movies = movies };
+            TableName = "Movies",
+            Key = new Dictionary<string, AttributeValue>
+            {
+                { "Id", new AttributeValue { S = input.MovieId.ToString() } }
+            }
+        });
+        return Utils.MapToMovie(response.Item);
     }
 }
+
+

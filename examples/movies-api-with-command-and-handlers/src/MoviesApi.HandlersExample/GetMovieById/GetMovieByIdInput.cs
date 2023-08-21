@@ -1,3 +1,6 @@
 namespace MoviesApi.HandlersExample;
 
-public record GetMovieByIdInput(int MovieId) : Event;
+public class GetMovieByIdInput : Event
+{
+    public int MovieId { get; set; }
+};

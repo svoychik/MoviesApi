@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.LambdaIntegration", "src\MoviesApi.LambdaIntegration\MoviesApi.LambdaIntegration.csproj", "{1BB4FE46-AADF-44F3-B8D3-203E03E19136}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.Common", "..\..\..\..\src\MoviesApi.Common\MoviesApi.Common.csproj", "{77714AC2-7EF4-4E76-8892-DD30FF6C2DC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BB4FE46-AADF-44F3-B8D3-203E03E19136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BB4FE46-AADF-44F3-B8D3-203E03E19136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BB4FE46-AADF-44F3-B8D3-203E03E19136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BB4FE46-AADF-44F3-B8D3-203E03E19136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77714AC2-7EF4-4E76-8892-DD30FF6C2DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77714AC2-7EF4-4E76-8892-DD30FF6C2DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77714AC2-7EF4-4E76-8892-DD30FF6C2DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77714AC2-7EF4-4E76-8892-DD30FF6C2DC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

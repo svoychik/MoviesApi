@@ -28,6 +28,7 @@ functions:
       - http:
           path: movies
           method: GET
+          cors: true # <-- CORS!
 
   GetMovieById:
     handler: MoviesApi::MoviesApi.QueryMoviesHandler::GetById
@@ -37,6 +38,7 @@ functions:
       - http:
           path: movies/{id}
           method: GET
+          cors: true # <-- CORS!
 
   PostMovieById:
     handler: MoviesApi::MoviesApi.CreateMovieHandler::ExecuteAsync
@@ -46,6 +48,7 @@ functions:
       - http:
           path: movies
           method: POST
+          cors: true # <-- CORS!
           authorizer:
             name: Authorizer
             resultTtlInSeconds: 5
@@ -60,6 +63,19 @@ functions:
       
 resources:
   Resources:
+    # this thing is required to process OPTIONS requests
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        StatusCode: '200'
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
+    # definition of DynamoDb table
     MoviesTable:
       Type: AWS::DynamoDB::Table
       Properties:

@@ -8,7 +8,7 @@ public class GetMovieByIdHandler: BaseHttpHandler<GetMovieByIdInput, Movie>
     }          
 
     public static IServiceProvider ConfigureServices() =>
-        new ServiceCollection()
+        new ServiceCollection() 
             //TODO: tell how to initialize Options<T>
             .AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>()
             .AddSingleton<ICommand<GetMovieByIdInput, Movie>, GetMovieByIdCommand>()

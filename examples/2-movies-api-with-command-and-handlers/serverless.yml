@@ -61,6 +61,17 @@ functions:
       
 resources:
   Resources:
+    # this thing is required to process OPTIONS requests
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
     MoviesTable:
       Type: AWS::DynamoDB::Table
       Properties:

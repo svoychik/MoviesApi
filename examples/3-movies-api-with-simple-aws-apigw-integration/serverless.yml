@@ -1,0 +1,90 @@
+service: moviesapi
+
+provider:
+  name: aws
+  runtime: dotnet6
+  region: eu-central-1
+
+  apiName: movies-api # Use a custom name for the API Gateway API - needed to easily identify the resource
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+          Resource: "arn:aws:dynamodb:eu-central-1:403117364727:table/Movies"
+
+package:
+  individually: true
+
+functions:
+  GetAllMovies:
+    handler: MoviesApi::MoviesApi.LambdaIntegration.QueryMoviesHandler::GetAll
+    package:
+      artifact: bin/release/net6.0/hello.zip
+    events:
+      - http:
+          path: movies
+          method: GET
+          integration: lambda
+
+  GetMovieById:
+    handler: MoviesApi::MoviesApi.LambdaIntegration.QueryMoviesHandler::GetById
+    package:
+       artifact: bin/release/net6.0/hello.zip
+    events:
+       - http:
+           path: movies/{id}
+           method: GET
+           integration: lambda
+
+  PostMovieById:
+    handler: MoviesApi::MoviesApi.LambdaIntegration.CreateMovieHandler::ExecuteAsync
+    package:
+      artifact: bin/release/net6.0/hello.zip
+    events:
+       - http:
+           path: movies
+           method: POST
+           integration: lambda
+          #  authorizer:
+          #    name: Authorizer
+          #    resultTtlInSeconds: 5
+          #    identitySource: method.request.header.Authorization
+          #    identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
+          #    type: token
+
+  Authorizer:
+     handler: MoviesApi::MoviesApi.HandlersExample.AuthorizeHandler::Execute
+     package:
+       artifact: bin/release/net6.0/hello.zip
+      
+resources:
+  Resources:
+    # # this thing is required to process OPTIONS requests
+    # GatewayResponseDefault4XX:
+    #   Type: 'AWS::ApiGateway::GatewayResponse'
+    #   Properties:
+    #     ResponseParameters:
+    #       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    #       gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+    #     ResponseType: DEFAULT_4XX
+    #     RestApiId:
+    #       Ref: 'ApiGatewayRestApi'
+
+    MoviesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Movies
+        AttributeDefinitions:
+          - AttributeName: Id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5

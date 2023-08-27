@@ -7,11 +7,11 @@ using MoviesApi.Common;
 
 namespace MoviesApi.LambdaIntegration;
 
-public class QueryMoviesFunctions
+public class QueryMoviesHandler
 {
     private readonly AmazonDynamoDBClient _dynamoDbClient;
 
-    public QueryMoviesFunctions()
+    public QueryMoviesHandler()
     {
         _dynamoDbClient = new AmazonDynamoDBClient();
     }
@@ -28,7 +28,7 @@ public class QueryMoviesFunctions
         });
         return response.Items.Any() 
             ? Utils.MapToMovie(response.Items.Single()) 
-            : throw new Exception("Movie not found");
+            : throw new Exception("[404] Movie not found");
     }
 
     public async Task<List<Movie>> GetAll(Movie request, ILambdaContext context)

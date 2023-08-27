@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApi.AspNetCoreServer", "MoviesApi.AspNetCoreServer\MoviesApi.AspNetCoreServer.csproj", "{5E2E2132-7D8B-4E5D-BF40-3D8C714C0EDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E2E2132-7D8B-4E5D-BF40-3D8C714C0EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E2E2132-7D8B-4E5D-BF40-3D8C714C0EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E2E2132-7D8B-4E5D-BF40-3D8C714C0EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E2E2132-7D8B-4E5D-BF40-3D8C714C0EDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

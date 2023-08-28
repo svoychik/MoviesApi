@@ -1,0 +1,1 @@
+aws apigateway get-rest-apis --region eu-central-1 --output json --query "items[?name=='movies-api'].id" --output text

@@ -1,9 +1,10 @@
-@baseUrl = https://j31fgom6n5.execute-api.eu-central-1.amazonaws.com/dev
+@baseUrl = https://x42502ouuf.execute-api.eu-central-1.amazonaws.com/dev
 
 GET {{baseUrl}}/movies HTTP/1.1
 
 ###
-GET {{baseUrl}}/movies/1001 HTTP/1.1
+GET {{baseUrl}}/movies/3 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsIm5ldyI6ImFkYXMifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaXNzIjoic2V2byIsImlhdCI6MTUxNjIzOTAyMn0.7l5tVlWWwFfTwB8DwxWYkjf4sGL8Yqv8EGDcOEQrXfs
 
 ###
 OPTIONS  {{baseUrl}}/movies/1 HTTP/1.1
@@ -13,7 +14,7 @@ POST {{baseUrl}}/movies HTTP/1.1
 content-Type: application/json
 
 {
-  "Id": "100",
+  "Id": "3",
   "Title": "The Shawshank Redemption",
   "Description": "Two imprisoned men bond over several years, finding solace and eventual redemption through acts of common decency.",
   "ReleaseDate": "1994-09-23",
@@ -27,7 +28,7 @@ content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsIm5ldyI6ImFkYXMifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaXNzIjoic2V2byIsImlhdCI6MTUxNjIzOTAyMn0.7l5tVlWWwFfTwB8DwxWYkjf4sGL8Yqv8EGDcOEQrXfs
 
 {
-  "Id": "100",
+  "Id": "3",
   "Title": "The Shawshank Redemption",
   "Description": "Two imprisoned men bond over several years, finding solace and eventual redemption through acts of common decency.",
   "ReleaseDate": "1994-09-23",

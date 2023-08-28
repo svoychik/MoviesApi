@@ -1,10 +1,10 @@
 {
     "devDependencies": {
-      "aws-sdk": "^2.1430.0",
-      "serverless": "^3.32.2"
+        "aws-sdk": "^2.1430.0",
+        "serverless": "^3.32.2",
+        "serverless-api-gateway-caching": "^1.10.2"
     },
     "scripts": {
-      "build-deploy": "./build.sh && serverless deploy"
+        "build-deploy": "./build.sh && serverless deploy"
     }
-  }
-  
+}

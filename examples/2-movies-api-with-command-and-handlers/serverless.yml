@@ -1,4 +1,15 @@
 service: moviesapi
+plugins:
+  - serverless-api-gateway-caching
+
+custom:
+  apiGatewayCaching:
+    enabled: true
+    clusterSize: "0.5" # defaults to '0.5'
+    ttlInSeconds: 300 # defaults to the maximum allowed: 3600
+    dataEncrypted: true # defaults to false
+    perKeyInvalidation:
+      requireAuthorization: true # default is true
 
 provider:
   name: aws
@@ -33,44 +44,75 @@ functions:
   GetMovieById:
     handler: MoviesApi::MoviesApi.HandlersExample.GetMovieByIdHandler::ExecuteAsync
     package:
-       artifact: bin/release/net6.0/hello.zip
+      artifact: bin/release/net6.0/hello.zip
     events:
-       - http:
-           path: movies/{id}
-           method: GET
+      - http:
+          path: movies/{id}
+          method: GET
+          caching:
+            enabled: true
+            cacheKeyParameters:
+              - name: request.path.id
+              # - name: request.header.Accept-Language # you can also use values from header
+          # authorizer:
+          #   name: Authorizer
+          #   resultTtlInSeconds: 60
+          #   identitySource: method.request.header.Authorization
+          #   identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
+          #   type: token
 
   PostMovieById:
     handler: MoviesApi::MoviesApi.HandlersExample.PutMovieHandler::ExecuteAsync
     package:
       artifact: bin/release/net6.0/hello.zip
     events:
-       - http:
-           path: movies
-           method: POST
-           authorizer:
-             name: Authorizer
-             resultTtlInSeconds: 5
-             identitySource: method.request.header.Authorization
-             identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
-             type: token
+      - http:
+          path: movies
+          method: POST
+          authorizer:
+            name: Authorizer
+            resultTtlInSeconds: 60
+            identitySource: method.request.header.Authorization
+            identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
+            type: token
 
   Authorizer:
-     handler: MoviesApi::MoviesApi.HandlersExample.AuthorizeHandler::Execute
-     package:
-       artifact: bin/release/net6.0/hello.zip
-      
+    handler: MoviesApi::MoviesApi.HandlersExample.AuthorizeHandler::Execute
+    package:
+      artifact: bin/release/net6.0/hello.zip
+
 resources:
   Resources:
+    # https://docs.aws.amazon.com/apigateway/latest/developerguide/supported-gateway-response-types.html
+    # This is needed when access is denied by a custom Authorizer
+    DenyFailureGatewayResponse:
+      DependsOn:
+        - ApiGatewayRestApi
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseTemplates:
+          application/json: |
+            {
+              "requestId": "$context.requestId",
+              "errors": [
+                { "description": $context.error.messageString }
+              ]
+            }
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        StatusCode: "401"
+
     # this thing is required to process OPTIONS requests
     GatewayResponseDefault4XX:
-      Type: 'AWS::ApiGateway::GatewayResponse'
+      Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_4XX
         RestApiId:
-          Ref: 'ApiGatewayRestApi'
+          Ref: "ApiGatewayRestApi"
 
     MoviesTable:
       Type: AWS::DynamoDB::Table

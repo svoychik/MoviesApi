@@ -1,0 +1,82 @@
+service: moviesapi
+
+provider:
+  name: aws
+  runtime: dotnet6
+  region: eu-central-1
+  httpApi:
+    cors: true
+    metrics: true
+    authorizers:
+      customAuthorizer:
+        name: customAuthorizer
+        functionName: Authorizer
+        type: request
+        resultTtlInSeconds: 60
+        identitySource:
+          - $request.header.Auth
+          - $request.header.Authorization
+        
+  logs:
+    httpApi:
+      format: '{ "requestId":"$context.requestId", "ip": "$context.identity.sourceIp", "requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod", "routeKey":"$context.routeKey", "status":"$context.status","protocol":"$context.protocol", "responseLength":"$context.responseLength" }'
+    
+  apiName: movies-api # Use a custom name for the API Gateway API - needed to easily identify the resource
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+          Resource: "arn:aws:dynamodb:eu-central-1:403117364727:table/Movies"
+        - Effect: Allow
+          Action:
+            - logs:*
+          Resource: "*"
+
+package:
+  artifact: bin/release/net6.0/hello.zip
+
+functions:
+  GetAllMovies:
+    handler: MoviesApi::MoviesApi.HandlersExample.GetAllMoviesHandler::ExecuteAsync
+    events:
+      - httpApi:
+          path: /movies
+          method: GET
+
+  GetMovieById:
+    handler: MoviesApi::MoviesApi.HandlersExample.GetMovieByIdHandler::ExecuteAsync
+    events:
+      - httpApi:
+          path: /movies/{id}
+          method: GET
+
+  PutMovie:
+    handler: MoviesApi::MoviesApi.HandlersExample.PutMovieHandler::ExecuteAsync
+    events:
+      - httpApi:
+          path: /movies
+          method: POST
+            
+  Authorizer:
+    handler: MoviesApi::MoviesApi.HandlersExample.AuthorizeHandler::Execute
+
+resources:
+  Resources:
+    MoviesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Movies
+        AttributeDefinitions:
+          - AttributeName: Id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5

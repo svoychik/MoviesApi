@@ -1,15 +1,4 @@
 service: moviesapi
-plugins:
-  - serverless-api-gateway-caching
-
-custom:
-  apiGatewayCaching:
-    enabled: true
-    clusterSize: "0.5" # defaults to '0.5'
-    ttlInSeconds: 300 # defaults to the maximum allowed: 3600
-    dataEncrypted: true # defaults to false
-    perKeyInvalidation:
-      requireAuthorization: true # default is true
 
 provider:
   name: aws
@@ -29,39 +18,26 @@ provider:
           Resource: "arn:aws:dynamodb:eu-central-1:403117364727:table/Movies"
 
 package:
-  individually: true
+  # individually: true
+  artifact: bin/release/net6.0/hello.zip
+
 
 functions:
   GetAllMovies:
     handler: MoviesApi::MoviesApi.HandlersExample.GetAllMoviesHandler::ExecuteAsync
-    package:
-      artifact: bin/release/net6.0/hello.zip
     events:
-      - http:
-          path: movies
+      - httpApi:
+          path: /movies
           method: GET
 
   GetMovieById:
     handler: MoviesApi::MoviesApi.HandlersExample.GetMovieByIdHandler::ExecuteAsync
-    package:
-      artifact: bin/release/net6.0/hello.zip
     events:
-      - http:
-          path: movies/{id}
+      - httpApi:
+          path: /movies/{id}
           method: GET
-          caching:
-            enabled: true
-            cacheKeyParameters:
-              - name: request.path.id
-              # - name: request.header.Accept-Language # you can also use values from header
-          # authorizer:
-          #   name: Authorizer
-          #   resultTtlInSeconds: 60
-          #   identitySource: method.request.header.Authorization
-          #   identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
-          #   type: token
 
-  PostMovieById:
+  PutMovie:
     handler: MoviesApi::MoviesApi.HandlersExample.PutMovieHandler::ExecuteAsync
     package:
       artifact: bin/release/net6.0/hello.zip
@@ -85,7 +61,7 @@ resources:
   Resources:
     # https://docs.aws.amazon.com/apigateway/latest/developerguide/supported-gateway-response-types.html
     # This is needed when access is denied by a custom Authorizer
-    DenyFailureGatewayResponse:
+    DefaultUnauthorizedResponse:
       DependsOn:
         - ApiGatewayRestApi
       Type: "AWS::ApiGateway::GatewayResponse"
@@ -103,7 +79,7 @@ resources:
           Ref: ApiGatewayRestApi
         StatusCode: "401"
 
-    # this thing is required to process OPTIONS requests
+    # this thing is needed to process OPTIONS requests
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"
       Properties:

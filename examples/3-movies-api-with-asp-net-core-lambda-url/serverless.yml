@@ -4,8 +4,6 @@ provider:
   name: aws
   runtime: dotnet6
   region: eu-central-1
-
-  apiName: movies-api # Use a custom name for the API Gateway API - needed to easily identify the resource
   iam:
     role:
       statements:
@@ -29,17 +27,6 @@ functions:
         
 resources:
   Resources:
-    # this thing is required to process OPTIONS requests
-    # GatewayResponseDefault4XX:
-    #   Type: 'AWS::ApiGateway::GatewayResponse'
-    #   Properties:
-    #     ResponseParameters:
-    #       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-    #       gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-    #     ResponseType: DEFAULT_4XX
-    #     RestApiId:
-    #       Ref: 'ApiGatewayRestApi'
-
     MoviesTable:
       Type: AWS::DynamoDB::Table
       Properties:

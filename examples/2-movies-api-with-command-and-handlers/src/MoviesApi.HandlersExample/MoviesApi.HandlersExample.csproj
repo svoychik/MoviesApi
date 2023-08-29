@@ -12,6 +12,6 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\MoviesApi.Common\MoviesApi.Common.csproj" />
+      <ProjectReference Include="..\..\..\..\common-src\MoviesApi.Common\MoviesApi.Common.csproj" />
     </ItemGroup>
 </Project>

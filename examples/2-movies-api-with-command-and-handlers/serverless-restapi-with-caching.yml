@@ -1,4 +1,13 @@
 service: moviesapi
+plugins:
+  - serverless-api-gateway-caching
+
+custom:
+  apiGatewayCaching:
+    enabled: true
+    clusterSize: "0.5" # defaults to '0.5'
+    ttlInSeconds: 300 # defaults to the maximum allowed: 3600
+    dataEncrypted: true # defaults to false
 
 provider:
   name: aws
@@ -14,68 +23,61 @@ provider:
             - dynamodb:PutItem
             - dynamodb:Query
             - dynamodb:Scan
+            - dynamodb:GetItem
           Resource: "arn:aws:dynamodb:eu-central-1:403117364727:table/Movies"
 
 package:
-  individually: true
+  # individually: true
+  artifact: bin/release/net6.0/hello.zip
+
 
 functions:
   GetAllMovies:
-    handler: MoviesApi::MoviesApi.QueryMoviesHandler::GetAll
-    package:
-      artifact: bin/release/net6.0/hello.zip
+    handler: MoviesApi::MoviesApi.HandlersExample.GetAllMoviesHandler::ExecuteAsync
     events:
-      - http:
-          path: movies
+      - httpApi:
+          path: /movies
           method: GET
-          cors: true # <-- CORS!
 
   GetMovieById:
-    handler: MoviesApi::MoviesApi.QueryMoviesHandler::GetById
-    package:
-      artifact: bin/release/net6.0/hello.zip
+    handler: MoviesApi::MoviesApi.HandlersExample.GetMovieByIdHandler::ExecuteAsync
     events:
-      - http:
-          path: movies/{id}
+      - httpApi:
+          path: /movies/{id}
           method: GET
-          cors: true # <-- CORS!
+          caching:
+            enabled: true
+            cacheKeyParameters:
+              - name: request.path.id
+              - name: request.header.Accept-Language # you can also use values from header
+          authorizer:
+            name: Authorizer
+            resultTtlInSeconds: 60
+            identitySource: method.request.header.Authorization
+            type: token
 
   PutMovie:
-    handler: MoviesApi::MoviesApi.CreateMovieHandler::ExecuteAsync
+    handler: MoviesApi::MoviesApi.HandlersExample.PutMovieHandler::ExecuteAsync
     package:
       artifact: bin/release/net6.0/hello.zip
     events:
       - http:
           path: movies
           method: POST
-          cors: true # <-- CORS!
           authorizer:
             name: Authorizer
-            resultTtlInSeconds: 5
+            resultTtlInSeconds: 60
             identitySource: method.request.header.Authorization
             identityValidationExpression: "Bearer.*" # regex to validate Authorization header quickly
             type: token
 
   Authorizer:
-    handler: MoviesApi::MoviesApi.AuthorizeHandler::Execute
+    handler: MoviesApi::MoviesApi.HandlersExample.AuthorizeHandler::Execute
     package:
       artifact: bin/release/net6.0/hello.zip
-      
+
 resources:
   Resources:
-    # this thing is required to process OPTIONS requests
-    GatewayResponseDefault4XX:
-      Type: 'AWS::ApiGateway::GatewayResponse'
-      Properties:
-        ResponseParameters:
-          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-        ResponseType: DEFAULT_4XX
-        StatusCode: '200'
-        RestApiId:
-          Ref: 'ApiGatewayRestApi'
-
-    # definition of DynamoDb table
     MoviesTable:
       Type: AWS::DynamoDB::Table
       Properties:

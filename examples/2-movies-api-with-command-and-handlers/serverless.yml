@@ -26,14 +26,14 @@ functions:
   GetAllMovies:
     handler: MoviesApi::MoviesApi.HandlersExample.GetAllMoviesHandler::ExecuteAsync
     events:
-      - httpApi:
+      - http:
           path: /movies
           method: GET
 
   GetMovieById:
     handler: MoviesApi::MoviesApi.HandlersExample.GetMovieByIdHandler::ExecuteAsync
     events:
-      - httpApi:
+      - http:
           path: /movies/{id}
           method: GET
 
